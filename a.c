@@ -33,7 +33,7 @@ gen_b(char *buf)
     char *buf2 = malloc(SZ);
     if (!buf2) {
         printf("Could not allocated memory.\n");
-        return;
+        exit(1);
     }
     memcpy(buf2, buf, SZ);
 
@@ -61,21 +61,21 @@ main(int argc, char **argv)
     FILE *f = fopen(fn, "w");
     if (!f) {
         printf("Could not open file %s for writing\n", fn);
-        return 1;
+        exit(1);
     }
 
     png_structp png = png_create_write_struct(PNG_LIBPNG_VER_STRING,
             NULL, NULL, NULL);
     if (!png)
-        return 1;
+        exit(1);
     png_infop png_info = png_create_info_struct(png);
     if (!png_info)
-        return 1;
+        exit(1);
 
     if (setjmp(png_jmpbuf(png))) {
         fclose(f);
         printf("libpng has encountered an error.\n");
-        return 1;
+        exit(1);
     }
 
     png_init_io(png, f);
@@ -90,7 +90,7 @@ main(int argc, char **argv)
     char *buf = malloc(SZ);
     if (!buf) {
         printf("Could not allocated memory.\n");
-        return 1;
+        exit(1);
     }
 
     gen_b(buf);
